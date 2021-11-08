@@ -4,10 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 
-variables:
-- group: group01
-- name: deploy_tag_id
-  value: $(Build.BuildId)
+
 
 trigger:
 - master
@@ -15,6 +12,11 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+- group: group01
+- name: deploy_tag_id
+  value: $(Build.BuildId)
+  
 steps:
 #- task: NodeTool@0
 #  inputs:
