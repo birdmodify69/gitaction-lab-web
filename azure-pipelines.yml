@@ -56,6 +56,9 @@ steps:
     Dockerfile: '**/Dockerfile'
 
 - script: |
-    echo "Container Id=>"$(Build.ContainerId)
+    echo "ContainerId =>"$(Build.ContainerId)
+    echo "BuildId =>"$(Build.BuildId)
+    echo "BuildNumber =>"$(Build.BuildNumber)
+    echo "BuildUri =>"$(Build.BuildUri)
   displayName: 'verify build number'
   
