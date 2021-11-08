@@ -38,6 +38,7 @@ steps:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: 'build/*'
     TargetFolder: '$(build.artifactstagingdirectory)'
+    
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: demo_webapp'
@@ -53,3 +54,8 @@ steps:
     repository: 'birdmodify/webapp-demo'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+
+- script: |
+    echo "Container Id=>"$(Build.ContainerId)
+  displayName: 'verify build number'
+  
