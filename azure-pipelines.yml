@@ -12,7 +12,7 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '10.x'
+    versionSpec: '12.x'
   displayName: 'Install Node.js'
 
 - script: |
@@ -20,18 +20,24 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: 'build/*'
-    TargetFolder: '$(build.artifactstagingdirectory)'
+#- task: CopyFiles@2
+#  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+#  inputs:
+#    SourceFolder: '$(system.defaultworkingdirectory)'
+#    Contents: 'build/*'
+#    TargetFolder: '$(build.artifactstagingdirectory)'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: demo_webapp'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'demo_webapp'
-    publishLocation: 'Container'
-    StoreAsTar: true
+#- task: PublishBuildArtifacts@1
+#  displayName: 'Publish Artifact: demo_webapp'
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#    ArtifactName: 'demo_webapp'
+#    publishLocation: 'Container'
+#    StoreAsTar: true
 
+#- task: Docker@2
+#  inputs:
+#    containerRegistry: 'Docker_Hub'
+#    repository: 'birdmodify/webapp-demo'
+#    command: 'buildAndPush'
+#    Dockerfile: '**/Dockerfile'
