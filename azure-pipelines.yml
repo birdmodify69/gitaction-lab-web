@@ -11,34 +11,30 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
-
-variables:
-- group: group01
-- name: deploy_tag_id
-  value: $(Build.BuildId)
   
 steps:
-#- task: NodeTool@0
-#  inputs:
-#    versionSpec: '12.x'
-#  displayName: 'Install Node.js'
-
-#- script: |
-#    npm install
-#  displayName: 'npm install'
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  displayName: 'Install Node.js'
 
 - script: |
-    ls -l
-  displayName: 'verify install'
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+
+#- script: |
+#    ls -l
+#  displayName: 'verify install'
 
 #- script: |
 #    npm run build
 #  displayName: 'npm build'
 
-#- script: |
-#    ls -l
-#    ls -l build/
-#  displayName: 'verify build'
+- script: |
+    ls -l
+    ls -l build/
+  displayName: 'verify build'
 
 #- task: CopyFiles@2
 #  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
@@ -56,12 +52,12 @@ steps:
 #    publishLocation: 'Container'
 #    StoreAsTar: true
 
-#- task: Docker@2
-#  inputs:
-#    containerRegistry: 'Docker_Hub'
-#    repository: 'birdmodify/webapp-demo'
-#    command: 'buildAndPush'
-#    Dockerfile: '**/Dockerfile'
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker_Hub'
+    repository: 'birdmodify/webapp-demo'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
 
 - script: |
     echo "ContainerId =>"$(Build.ContainerId)
