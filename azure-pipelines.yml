@@ -20,8 +20,17 @@ steps:
   displayName: 'npm install'
 
 - script: |
+    ls -l
+  displayName: 'verify install'
+
+- script: |
     npm run build
   displayName: 'npm build'
+
+- script: |
+    ls -l
+    ls -l build/
+  displayName: 'verify build'
 
 #- task: CopyFiles@2
 #  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
