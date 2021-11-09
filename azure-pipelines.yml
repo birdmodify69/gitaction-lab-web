@@ -17,12 +17,13 @@ steps:
   inputs:
     SonarCloud: 'Sonar_Cloud'
     organization: 'birdmodify69'
-    scannerMode: 'Other'
+    scannerMode: 'MSBuild'
     extraProperties: |
       # Additional properties that will be passed to the scanner, 
       # Put one key=value per line, example:
       # sonar.exclusions=**/*.bin
       sonar.projectKey=birdmodify69_demo-webapp
+
 
 - task: NodeTool@0
   inputs:
