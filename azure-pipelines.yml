@@ -17,7 +17,7 @@ steps:
   inputs:
     SonarCloud: 'Sonar_Cloud'
     organization: 'birdmodify69'
-    scannerMode: 'MSBuild'
+    scannerMode: 'Other'
     extraProperties: |
       # Additional properties that will be passed to the scanner, 
       # Put one key=value per line, example:
