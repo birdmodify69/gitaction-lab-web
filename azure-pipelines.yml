@@ -37,9 +37,9 @@ steps:
   displayName: 'npm install'
 
 
-- script: |
-    ls -l
-  displayName: 'verify install'
+#- script: |
+#    ls -l
+#  displayName: 'verify install'
 
 - task: SonarCloudAnalyze@1
 
@@ -53,9 +53,9 @@ steps:
   displayName: 'npm build'
 
 
-- script: |
-    ls -l
-    ls -l build/
+#- script: |
+#    ls -l
+#    ls -l build/
   displayName: 'verify build'
 
 - task: CopyFiles@2
