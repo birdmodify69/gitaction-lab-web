@@ -87,18 +87,3 @@ steps:
     echo "BuildUri =>"$(Build.BuildUri)
   displayName: 'verify build number'
 
-jobs:
-  # Track deployments on the environment.
-- deployment: DeployWeb
-  displayName: deploy Web App
-  pool:
-    vmImage: 'ubuntu-latest'
-  # Creates an environment if it doesn't exist.
-  environment: 'test'
-  strategy:
-    # Default deployment strategy, more coming...
-    runOnce:
-      deploy:
-        steps:
-        - checkout: self 
-        - script: echo my first deployment
