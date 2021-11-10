@@ -3,9 +3,6 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-
-
-
 trigger:
 - master
 
@@ -24,24 +21,23 @@ steps:
       # sonar.exclusions=**/*.bin
       sonar.projectKey=birdmodify69_demo-webapp
 
-
-
 - task: NodeTool@0
   inputs:
     versionSpec: '12.x'
   displayName: 'Install Node.js'
+
 
 - script: |
     npm install
 #    npm run build
   displayName: 'npm install'
 
+
 - script: |
     ls -l
   displayName: 'verify install'
 
 - task: SonarCloudAnalyze@1
-
 
 - task: SonarCloudPublish@1
   inputs:
@@ -51,6 +47,7 @@ steps:
 - script: |
     npm run build
   displayName: 'npm build'
+
 
 - script: |
     ls -l
@@ -86,4 +83,3 @@ steps:
     echo "BuildNumber =>"$(Build.BuildNumber)
     echo "BuildUri =>"$(Build.BuildUri)
   displayName: 'verify build number'
-
