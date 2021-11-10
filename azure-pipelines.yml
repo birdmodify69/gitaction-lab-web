@@ -56,7 +56,7 @@ steps:
 #- script: |
 #    ls -l
 #    ls -l build/
-  displayName: 'verify build'
+#  displayName: 'verify build'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
