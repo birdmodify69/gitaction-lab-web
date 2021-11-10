@@ -3,13 +3,29 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
+
+
+
 trigger:
 - master
 
 pool:
   vmImage: ubuntu-latest
-
+  
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'Sonar_Cloud'
+    organization: 'birdmodify69'
+    scannerMode: 'Other'
+    extraProperties: |
+      # Additional properties that will be passed to the scanner, 
+      # Put one key=value per line, example:
+      # sonar.exclusions=**/*.bin
+      sonar.projectKey=birdmodify69_demo-webapp
+
+
+
 - task: NodeTool@0
   inputs:
     versionSpec: '12.x'
@@ -17,11 +33,20 @@ steps:
 
 - script: |
     npm install
+#    npm run build
   displayName: 'npm install'
 
 - script: |
     ls -l
   displayName: 'verify install'
+
+- task: SonarCloudAnalyze@1
+
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+
 
 - script: |
     npm run build
@@ -38,6 +63,7 @@ steps:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: 'build/*'
     TargetFolder: '$(build.artifactstagingdirectory)'
+    
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: demo_webapp'
@@ -53,3 +79,11 @@ steps:
     repository: 'birdmodify/webapp-demo'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+
+- script: |
+    echo "ContainerId =>"$(Build.ContainerId)
+    echo "BuildId =>"$(Build.BuildId)
+    echo "BuildNumber =>"$(Build.BuildNumber)
+    echo "BuildUri =>"$(Build.BuildUri)
+  displayName: 'verify build number'
+  
