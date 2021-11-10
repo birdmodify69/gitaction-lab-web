@@ -72,7 +72,7 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'demo_webapp'
     publishLocation: 'Container'
-    StoreAsTar: true
+    StoreAsTar: false
 
 - task: Docker@2
   inputs:
