@@ -6,12 +6,12 @@
 trigger:
 - master
 
-#pool:
-#  vmImage: ubuntu-latest
 pool:
-  name: 'Default'
-  demands:
-  - npm
+  vmImage: ubuntu-latest
+#pool:
+#  name: 'Default'
+#  demands:
+#  - npm
   
 steps:
 - task: SonarCloudPrepare@1
