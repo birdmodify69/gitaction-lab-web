@@ -36,21 +36,11 @@ jobs:
         
     - name: Copy Coverage To Predictable Location
       run: cp coverage/cobertura-coverage.xml coverage/coverage.cobertura.xml
-
-    - name: Code Coverage Summary Report
-      # uses: irongut/CodeCoverageSummary@v1.0.2
-      uses: joshjohanning/CodeCoverageSummary@v1.0.2
+       
+    - uses: 5monkeys/cobertura-action@master
       with:
-        filename: coverage/cobertura-coverage.xml
-        badge: true
-        format: 'markdown'
-        output: 'both'
-
-    - name: Add Coverage PR Comment
-      uses: marocchino/sticky-pull-request-comment@v2
-      if: github.event_name == 'pull_request'
-      with:
-        recreate: true
-        path: code-coverage-results.md    
+        path: coverage/cobertura-coverage.xml
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        minimum_coverage: 75
         
     #- run: npm run build --if-present    
