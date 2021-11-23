@@ -55,6 +55,13 @@ jobs:
         # The Number of GPU Resources needed in the Container
         image: birdmodify/birdtest-webapp:latest
         # IP Address type of the Container Group. Accepted Values are { Private, Public }.Currently it only supports { Public }
+        ip-address: Public
+        location: Southeast Asia
+        #log-analytics-workspace: # optional
+        # The Log Analytics Workspace Key
+        #log-analytics-workspace-key: # optional
+        # The Log type to be used. Accepted Values are { ContainerInsights, ContainerInstanceLogs }
+        #log-type: # optional
         memory: 1.5 # optional, default is 1.5
         # Name of the Container Group Instance
         name: bm-webapp-aci
