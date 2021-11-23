@@ -40,11 +40,8 @@ jobs:
       with:
         path: coverage/cobertura-coverage.xml
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        minimum_coverage: 0
+        minimum_coverage: 0        
         
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
     - uses: sonarsource/sonarqube-scan-action@master
       env:
         sonar.projectKey: test-demo-web
@@ -62,6 +59,7 @@ jobs:
         # Location of the scanner metadata report file
         # scanMetadataReportFile: # optional, default is .scannerwork/report-task.txt
     - run: pwd
+    #- run: npm install
     - run: ls -l 
     - run: npm run build
     
