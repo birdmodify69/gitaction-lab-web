@@ -1,0 +1,71 @@
+# This workflow will build and push a node.js application to an Azure Web App when there is a push to the master branch.
+#
+# This workflow assumes you have already created the target Azure App Service web app.
+# For instructions see https://docs.microsoft.com/azure/app-service/app-service-plan-manage#create-an-app-service-plan
+#
+# To configure this workflow:
+#
+# 1. For Linux apps, add an app setting called WEBSITE_WEBDEPLOY_USE_SCM and set it to true in your app **before downloading the file**.
+#      For more instructions see: https://docs.microsoft.com/azure/app-service/configure-common#configure-app-settings
+#
+# 2. Set up a secret in your repository named AZURE_WEBAPP_PUBLISH_PROFILE with the value of your Azure publish profile.
+#    For instructions on obtaining the publish profile see: https://docs.microsoft.com/azure/app-service/deploy-github-actions#configure-the-github-secret
+#
+# 3. Change the values for the AZURE_WEBAPP_NAME, AZURE_WEBAPP_PACKAGE_PATH and NODE_VERSION environment variables  (below).
+#
+# For more information on GitHub Actions for Azure, refer to https://github.com/Azure/Actions
+# For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Deploy to Azure Container Instances
+      uses: Azure/aci-deploy@v1
+      with:
+        # Name of the Resource Group in which the Container Instance will be created
+        resource-group: bsa-lab-rg        
+        # The command line to run when the container is started, e.g. "/bin/bash -c myscript.sh"
+        #command-line: # optional, default is 
+        # Number of CPU Cores Required
+        cpu: 1 # optional, default is 1
+        # The DNS Name Label for Container with Public IP
+        dns-name-label: bm-webapp-aci
+        # List of environment variables for the container. Space-seperated in "key=value" format
+        #environment-variables: # optional, default is 
+        # The target directory path in the git repository. Must not contain ".."
+        #gitrepo-dir: # optional, default is 
+        # The path within the container where the git repo volume should be mounted. Must not contain ":"
+        #gitrepo-mount-path: # optional, default is 
+        # The commit hash for the specified revision
+        #gitrepo-revision: # optional, default is 
+        # The URL of a git repository to be mounted as a volume
+        #gitrepo-url: docker.io # optional, default is 
+        # The Number of GPU Resources needed in the Container
+        image: birdmodify/birdtest-webapp:latest
+        # IP Address type of the Container Group. Accepted Values are { Private, Public }.Currently it only supports { Public }
+        memory: 1.5# optional, default is 1.5
+        # Name of the Container Group Instance
+        name: bm-webapp-aci
+        # The OS type of the Containers. Accepted Values are  { Linux, Windows }
+        os-type: Linux # optional, default is Linux
+        # The Ports to Open on the Container. Space seperate the ports for multiple values
+        ports: 80 # optional, default is 80
+        # The Network protocol to use. Accepted Values are { TCP, UDP }
+        protocol: TCP# optional, default is TCP
+        # The container image registry login server
+        registry-login-server: docker.io# optional, default is 
+        # Username to log in Container Image Registry Server
+        registry-username: birdmodify# optional, default is 
+        # Password to log in Container Image Registry Server
+        registry-password: simonsay# optional, default is 
+        # Restart Policy for the container(s). Accepted Values are { Always, OnFailure, Never }
+        #restart-policy: # optional, default is Always
+        # List of secure environment variables for the container. Space seperated values in "key=value" format
+        #secure-environment-variables: # optional, default is 
