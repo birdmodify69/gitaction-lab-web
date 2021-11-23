@@ -94,10 +94,18 @@ jobs:
     - run: pwd
     - run: ls -l
     #- run: robot --version
-    - run: robot --pythonpath . -x outputxunit.xml Test.robot
+    - run: robot --pythonpath . -x reports/outputxunit.xml Test.robot
         
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: outputxunit.xml
+        files: reports/outputxunit.xml
+        
+    - name: Upload reports
+      uses: actions/upload-artifact@v1
+      if: always()
+      with:
+        name: reports
+        # set path to Robot Framework results reports. Exclude dummy file that is needed because of ppodgorsek image priviledges.
+        path: ${{ github.workspace }}/reports
