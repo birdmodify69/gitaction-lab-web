@@ -33,6 +33,7 @@ jobs:
     - run: npm ci
     - run: npm install
     - run : CI=true npm run test 
+    - run: cat coverage/cobertura-coverage.xml
        
     - uses: 5monkeys/cobertura-action@master
       with:
