@@ -72,11 +72,11 @@ jobs:
         # The Network protocol to use. Accepted Values are { TCP, UDP }
         protocol: TCP # optional, default is TCP
         # The container image registry login server
-        registry-login-server: registry.hub.docker.com # optional, default is 
+        registry-login-server: ${{ secrets.DOCKERHUB_SERVER }} # optional, default is 
         # Username to log in Container Image Registry Server
-        registry-username: birdmodify # optional, default is 
+        registry-username: ${{ secrets.DOCKERHUB_USERNAME }} # optional, default is 
         # Password to log in Container Image Registry Server
-        registry-password: simonsay # optional, default is 
+        registry-password: ${{ secrets.DOCKERHUB_PASSWORD }} # optional, default is 
         # Restart Policy for the container(s). Accepted Values are { Always, OnFailure, Never }
         #restart-policy: # optional, default is Always
         # List of secure environment variables for the container. Space seperated values in "key=value" format
