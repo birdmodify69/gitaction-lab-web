@@ -32,7 +32,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm install
-    - run : CI=true npm run test 
+    - run: CI=true npm run test 
     - run: cat coverage/cobertura-coverage.xml
        
     - uses: 5monkeys/cobertura-action@master
@@ -60,8 +60,9 @@ jobs:
       #with:
         # Location of the scanner metadata report file
         # scanMetadataReportFile: # optional, default is .scannerwork/report-task.txt
-
-    - run: npm run build --if-present    
+    - run: pwd
+    - run: ls -l 
+    - run: npm run build
     
     - uses: actions/upload-artifact@v2
       with:
