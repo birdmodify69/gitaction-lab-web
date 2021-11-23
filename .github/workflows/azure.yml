@@ -72,3 +72,22 @@ jobs:
         #restart-policy: # optional, default is Always
         # List of secure environment variables for the container. Space seperated values in "key=value" format
         #secure-environment-variables: # optional, default is 
+
+    - name: Setup Python
+      uses: actions/setup-python@v2.3.0
+      with:
+        # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+        python-version: 3.6 # optional, default is 3.x
+        # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv.
+        #cache: # optional
+        # The target architecture (x86, x64) of the Python interpreter.
+        architecture: x86 # optional
+        # Used to pull python distributions from actions/python-versions. Since there's a default, this is typically not supplied by the user.
+        #token: # optional, default is ${{ github.token }}
+        # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
+        #cache-dependency-path: # optional
+    
+    - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
+    - run:  echo Hello world
+    #- run: robot --pythonpath . -x outputxunit.xml Test.robot
+    - run: robot --version
