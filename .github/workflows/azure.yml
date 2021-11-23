@@ -1,0 +1,93 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy to Staging
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Azure Container Instances
+      uses: Azure/aci-deploy@v1
+      with:
+        # Name of the Resource Group in which the Container Instance will be created
+        resource-group: bsa-lab-rg        
+        # The command line to run when the container is started, e.g. "/bin/bash -c myscript.sh"
+        #command-line: # optional, default is 
+        # Number of CPU Cores Required
+        cpu: 1 # optional, default is 1
+        # The DNS Name Label for Container with Public IP
+        dns-name-label: bm-webapp-aci
+        # List of environment variables for the container. Space-seperated in "key=value" format
+        #environment-variables: # optional, default is 
+        # The target directory path in the git repository. Must not contain ".."
+        #gitrepo-dir: # optional, default is 
+        # The path within the container where the git repo volume should be mounted. Must not contain ":"
+        #gitrepo-mount-path: # optional, default is 
+        # The commit hash for the specified revision
+        #gitrepo-revision: # optional, default is 
+        # The URL of a git repository to be mounted as a volume
+        #gitrepo-url: docker.io # optional, default is 
+        # The Number of GPU Resources needed in the Container
+        image: birdmodify/birdtest-webapp:latest
+        # IP Address type of the Container Group. Accepted Values are { Private, Public }.Currently it only supports { Public }
+        ip-address: Public
+        location: Southeast Asia
+        #log-analytics-workspace: # optional
+        # The Log Analytics Workspace Key
+        #log-analytics-workspace-key: # optional
+        # The Log type to be used. Accepted Values are { ContainerInsights, ContainerInstanceLogs }
+        #log-type: # optional
+        memory: 1.5 # optional, default is 1.5
+        # Name of the Container Group Instance
+        name: bm-webapp-aci
+        # The OS type of the Containers. Accepted Values are  { Linux, Windows }
+        os-type: Linux # optional, default is Linux
+        # The Ports to Open on the Container. Space seperate the ports for multiple values
+        ports: 80 # optional, default is 80
+        # The Network protocol to use. Accepted Values are { TCP, UDP }
+        protocol: TCP # optional, default is TCP
+        # The container image registry login server
+        registry-login-server: ${{ secrets.DOCKERHUB_SERVER }} # optional, default is 
+        # Username to log in Container Image Registry Server
+        registry-username: ${{ secrets.DOCKERHUB_USERNAME }} # optional, default is 
+        # Password to log in Container Image Registry Server
+        registry-password: ${{ secrets.DOCKERHUB_PASSWORD }} # optional, default is 
+        # Restart Policy for the container(s). Accepted Values are { Always, OnFailure, Never }
+        #restart-policy: # optional, default is Always
+        # List of secure environment variables for the container. Space seperated values in "key=value" format
+        #secure-environment-variables: # optional, default is 
+
+    - name: Setup Python
+      uses: actions/setup-python@v2.3.0
+      with:
+        # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+        python-version: 3.x # optional, default is 3.x
+        # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv.
+        #cache: # optional
+        # The target architecture (x86, x64) of the Python interpreter.
+        architecture: x86 # optional
+        # Used to pull python distributions from actions/python-versions. Since there's a default, this is typically not supplied by the user.
+        #token: # optional, default is ${{ github.token }}
+        # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
+        #cache-dependency-path: # optional
+    
+    - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
+    - run:  echo Hello world
+    #- run: robot --pythonpath . -x outputxunit.xml Test.robot
+    - run: robot --version
