@@ -61,4 +61,10 @@ jobs:
         # Location of the scanner metadata report file
         # scanMetadataReportFile: # optional, default is .scannerwork/report-task.txt
 
-    #- run: npm run build --if-present    
+    - run: npm run build --if-present    
+    
+    - uses: actions/upload-artifact@v2
+      with:
+        name: web-demo
+        path: build # or path/to/artifact
+
