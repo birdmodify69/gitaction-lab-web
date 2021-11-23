@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+    
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
@@ -72,7 +73,9 @@ jobs:
         #restart-policy: # optional, default is Always
         # List of secure environment variables for the container. Space seperated values in "key=value" format
         #secure-environment-variables: # optional, default is 
-
+    
+    - uses: actions/checkout@v2
+    
     - name: Setup Python
       uses: actions/setup-python@v2.3.0
       #with:
