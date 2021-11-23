@@ -4,7 +4,7 @@ Library           String
 
 *** Test Cases ***
 TestCase01
-    Open Browser    https://bm-web-demo.azurewebsites.net/    headlesschrome
+    Open Browser    http://bm-webapp-aci.southeastasia.azurecontainer.io/    headlesschrome
     Maximize Browser Window
     Wait Until Page Contains    React App
 
