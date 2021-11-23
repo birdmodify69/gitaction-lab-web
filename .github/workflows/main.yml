@@ -41,5 +41,12 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         minimum_coverage: 0
         
-        
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: sonarsource/sonarqube-scan-action@master
+      env:
+        sonar.projectKey: test-demo-web
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}    
     #- run: npm run build --if-present    
