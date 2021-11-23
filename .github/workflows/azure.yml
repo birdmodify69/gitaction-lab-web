@@ -77,7 +77,7 @@ jobs:
       uses: actions/setup-python@v2.3.0
       with:
         # Version range or exact version of a Python version to use, using SemVer's version range syntax.
-        python-version: 3.x # optional, default is 3.x
+        #python-version: 3.7 # optional, default is 3.x
         # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv.
         #cache: # optional
         # The target architecture (x86, x64) of the Python interpreter.
@@ -89,5 +89,5 @@ jobs:
     
     - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
     - run:  echo Hello world
-    #- run: robot --pythonpath . -x outputxunit.xml Test.robot
-    - run: robot --version
+    - run: robot --pythonpath . -x outputxunit.xml Test.robot
+    #- run: robot --version
