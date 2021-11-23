@@ -31,5 +31,26 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - run: npm install
+    - run : CI=true npm run test    
+    
+    - name: Code Coverage Summary
+      # You may pin to the exact commit or the version.
+      # uses: irongut/CodeCoverageSummary@065eaf7bb520f8e36979631183958be5e7934e31
+      uses: irongut/CodeCoverageSummary@v1.1.0
+      with:
+        # Code coverage file to analyse.
+        filename: coverage/cobertura-coverage.xml
+        # Include a Line Rate coverage badge in the output using shields.io - true / false (default).
+        badge: true # optional, default is false
+        # Fail if overall Line Rate below lower threshold - true / false (default).
+        fail_below_min: false # optional, default is false
+        # Output Format - markdown or text (default).
+        format: Cobertura # optional, default is text
+        # Include health indicators in the output - true (default) / false.
+        indicators: true # optional, default is true
+        # Output Type - console (default), file or both.
+        output: console # optional, default is console
+        
+        
+    #- run: npm run build --if-present    
