@@ -88,6 +88,8 @@ jobs:
         #cache-dependency-path: # optional
     
     - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
-    - run:  echo Hello world
+    - run: pwd
+    - run: ls -l
+    - run: robot --version
     - run: robot --pythonpath . -x outputxunit.xml Test.robot
-    #- run: robot --version
+
