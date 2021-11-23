@@ -55,7 +55,7 @@ jobs:
         # The Number of GPU Resources needed in the Container
         image: birdmodify/birdtest-webapp:latest
         # IP Address type of the Container Group. Accepted Values are { Private, Public }.Currently it only supports { Public }
-        memory: 1.5# optional, default is 1.5
+        memory: 1.5 # optional, default is 1.5
         # Name of the Container Group Instance
         name: bm-webapp-aci
         # The OS type of the Containers. Accepted Values are  { Linux, Windows }
@@ -63,13 +63,13 @@ jobs:
         # The Ports to Open on the Container. Space seperate the ports for multiple values
         ports: 80 # optional, default is 80
         # The Network protocol to use. Accepted Values are { TCP, UDP }
-        protocol: TCP# optional, default is TCP
+        protocol: TCP # optional, default is TCP
         # The container image registry login server
-        registry-login-server: docker.io# optional, default is 
+        registry-login-server: registry.hub.docker.com # optional, default is 
         # Username to log in Container Image Registry Server
-        registry-username: birdmodify# optional, default is 
+        registry-username: birdmodify # optional, default is 
         # Password to log in Container Image Registry Server
-        registry-password: simonsay# optional, default is 
+        registry-password: simonsay # optional, default is 
         # Restart Policy for the container(s). Accepted Values are { Always, OnFailure, Never }
         #restart-policy: # optional, default is Always
         # List of secure environment variables for the container. Space seperated values in "key=value" format
