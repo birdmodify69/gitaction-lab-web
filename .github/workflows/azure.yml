@@ -27,7 +27,7 @@ jobs:
       uses: Azure/aci-deploy@v1
       with:
         # Name of the Resource Group in which the Container Instance will be created
-        resource-group: bsa-lab-rg        
+        resource-group: github-lab-rg      
         # The command line to run when the container is started, e.g. "/bin/bash -c myscript.sh"
         #command-line: # optional, default is 
         # Number of CPU Cores Required
@@ -93,7 +93,6 @@ jobs:
     - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
     - run: pwd
     - run: ls -l
-    #- run: robot --version
     - run: robot --pythonpath . -x reports/outputxunit.xml Test.robot
         
     - name: Publish Unit Test Results
