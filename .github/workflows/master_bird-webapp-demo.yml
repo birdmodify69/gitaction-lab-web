@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'production'
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -51,6 +51,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'bird-webapp-demo'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_068839ee6dbd44159ad4fe7e4a82697d }}
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0A1B652DBB5C4E8C9F4E582B78094CA2 }}
           package: .
