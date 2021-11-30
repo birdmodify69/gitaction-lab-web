@@ -57,7 +57,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: birdmodify/birdtest-webapp:latest        
+        tags: birdmodify/birdtest-webapp:${{ github.sha }}        
 
     #- name: Build and push container image to registry
     #  uses: docker/build-push-action@v2
@@ -82,4 +82,4 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_428dd930f897464a928f31998c12de25 }}
         #images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c7e1c5023794471aaac8f0b58f4bd628 }}/birdmodify/birdtest-webapp:${{ github.sha }}'
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c7e1c5023794471aaac8f0b58f4bd628 }}/birdmodify/birdtest-webapp:latest'
+        images: 'index.docker.io/birdmodify/birdtest-webapp:${{ github.sha }}'
