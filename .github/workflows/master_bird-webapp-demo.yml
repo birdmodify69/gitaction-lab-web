@@ -81,4 +81,5 @@ jobs:
         app-name: 'bird-webapp-demo'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_428dd930f897464a928f31998c12de25 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c7e1c5023794471aaac8f0b58f4bd628 }}/birdmodify/birdtest-webapp:${{ github.sha }}'
+        #images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c7e1c5023794471aaac8f0b58f4bd628 }}/birdmodify/birdtest-webapp:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c7e1c5023794471aaac8f0b58f4bd628 }}/birdmodify/birdtest-webapp:latest'
