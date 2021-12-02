@@ -15,11 +15,13 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  install-and-unittest:
+  build-container:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: testing
-    
+    outputs:      
+      tag: ${{ github.sha }}
+      
     strategy:
       matrix:
         node-version: [12.x]
@@ -56,15 +58,8 @@ jobs:
         with:
           path: coverage/cobertura-coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          minimum_coverage: 0
-          
-  static-test:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    needs: [install-and-unittest]
-    environment: testing
-    
-    steps:
+          minimum_coverage: 0         
+
       - uses: sonarsource/sonarqube-scan-action@master
         env:
           sonar.projectKey: test-demo-web
@@ -123,4 +118,20 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
-
+  deploy-to-testing_env:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: [build-container]
+    environment: 
+      name: testing
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'bird-webapp-demo-testing'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}        
+        images: 'index.docker.io/birdmodify/birdtest-webapp:${{ github.sha }}'
