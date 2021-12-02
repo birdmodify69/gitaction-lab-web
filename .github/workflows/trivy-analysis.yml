@@ -32,7 +32,7 @@ jobs:
         uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
         with:
           #image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
-          image-ref: 'docker.io/birdmodify/birdtest-webapp:8e5d6d9df2663c821c88f29f8708d88cc6b7a53f'          
+          image-ref: 'docker.io/birdmodify/birdtest-webapp:latest'          
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
