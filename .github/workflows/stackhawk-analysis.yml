@@ -50,7 +50,7 @@ jobs:
 
       - name: Start your service
         #run: ./your-service.sh &                  # ✏️ Update this to run your own service to be scanned
-        run: docker run -d docker.io/birdmodify/birdtest-webapp:latest
+        run: docker run -p 3000:80 -d docker.io/birdmodify/birdtest-webapp:latest
 
       - name: Run HawkScan
         uses: stackhawk/hawkscan-action@4c3258cd62248dac6d9fe91dd8d45928c697dee0
