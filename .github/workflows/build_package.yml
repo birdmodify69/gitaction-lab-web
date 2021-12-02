@@ -18,7 +18,7 @@ jobs:
   build-to-package:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-   #environment: testing
+    environment: testing
     
     strategy:
       matrix:
@@ -35,37 +35,37 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm install
-      - run: ls -l
-      - run: CI=true npm run test
+      #- run: npm install
+      #- run: ls -l
+      #- run: CI=true npm run test
       #- run: cat coverage/cobertura-coverage.xml          
      
-      #- name: Install Dependencies
-      #  run: | 
-      #    npm install
-      #    ls -l
+      - name: Install Dependencies
+        run: | 
+          npm install
+          ls -l
           
-      #- name: Unit Testing
-      #  run: |
-      #    CI=true npm run test
-      #    cat coverage/cobertura-coverage.xml
+      - name: Unit Testing
+        run: |
+          CI=true npm run test
+          cat coverage/cobertura-coverage.xml
 
       
-      #- name: Publish Unit Test Result
-      - uses: 5monkeys/cobertura-action@master
+      - name: Publish Unit Test Result
+        uses: 5monkeys/cobertura-action@master
         with:
           path: coverage/cobertura-coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           minimum_coverage: 0
           
-      #- name: Build to Package
-      #  run: | 
-      #    npm run build
-      #    ls -l
+      - name: Build to Package
+        run: | 
+          npm run build
+          ls -l
       
-      #- name: Upload artifact for deployment job
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    name: birdtest-webapp
-      #    path: build
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: birdtest-webapp
+          path: build
 
