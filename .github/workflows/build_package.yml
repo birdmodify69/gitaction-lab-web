@@ -35,20 +35,24 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - run: npm install
+      - run: ls -l
+      - run: CI=true npm run test 
+      - run: cat coverage/cobertura-coverage.xml          
      
-      - name: Install Dependencies
-        run: | 
-          npm install
-          ls -l
+      #- name: Install Dependencies
+      #  run: | 
+      #    npm install
+      #    ls -l
           
-      - name: Unit Testing
-        run: |
-          CI=true npm run test
-          cat coverage/cobertura-coverage.xml
+      #- name: Unit Testing
+      #  run: |
+      #    CI=true npm run test
+      #    cat coverage/cobertura-coverage.xml
 
-      # Runs a single command using the runners shell
-      - name: Publish Unit Test Result
-        uses: 5monkeys/cobertura-action@v12
+      
+      #- name: Publish Unit Test Result
+      - uses: 5monkeys/cobertura-action@master
         with:
           path: coverage/cobertura-coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
