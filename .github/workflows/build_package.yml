@@ -48,7 +48,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Publish Unit Test Result
-        uses: 5monkeys/cobertura-action@master
+        uses: 5monkeys/cobertura-action@v12
         with:
           path: coverage/cobertura-coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
