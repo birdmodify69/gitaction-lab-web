@@ -31,12 +31,18 @@ jobs:
         tag: ${{ github.sha }}
         
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+        
       - name: Print the input username to STDOUT
         id: step01
         run: echo The username is ${{ github.event.inputs.username }}
        
       - run: echo The tags is ${{ github.sha }}
       
-      - uses: ./.github/workflows/demo2.yml@master
+      - run: pwd
+      - run: ls -l
+      
+      - uses: ./.github/workflows/demo2.yml
         with:
           username: ${{ github.event.inputs.username }}
