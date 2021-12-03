@@ -1,19 +1,24 @@
 name: demo02
 on:
-  workflow_call:
-    inputs:
-      username:
-        required: true
-        type: string
+  workflow_run:
+      workflows: ["my_job"]
+      types:
+        - completed
+        
+  #workflow_call:
+  #  inputs:
+   #   username:
+   #     required: true
+   #     type: string
     #outputs:
     #  workflow_output1:
     #    description: "The first job output"
     #    value: ${{ jobs.my_job.outputs.job_output1 }}
 
 jobs:
-  my_job:
+  verify:
     runs-on: ubuntu-latest
 
     steps:
       - name: Print the input name to STDOUT
-        run: echo The username is ${{ inputs.username }}
+        run: echo The tag is ${{ jobs.my_job.outputs.tag }}
