@@ -1,21 +1,31 @@
 name: demo01
 on:
-  workflow_call:
-    inputs:
-      username:
-        description: 'A username passed from the caller workflow'
-        default: 'john-doe'
-        required: false
-        type: string
+  #workflow_call:
+  #  inputs:
+  #    username:
+  #      description: 'A username passed from the caller workflow'
+  #      default: 'john-doe'
+  #      required: false
+  #      type: string
         
-  workflow_dispatch:        
+  #workflow_dispatch:        
+  #  inputs:
+  #      username:
+  #        description: 'A username passed from the caller workflow'
+  #        default: 'birdmodify'
+  #        required: false
+  #        type: string     
+          
+  workflow_dispatch:
     inputs:
-        username:
-          description: 'A username passed from the caller workflow'
-          default: 'birdmodify'
-          required: false
-          type: string     
-    
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning' 
+      tags:
+        description: 'Test scenario tags'
+        required: false 
+        default: 'OK' 
   
 jobs: 
   print-username:
@@ -24,8 +34,8 @@ jobs:
     #    tag: ${{ github.sha }}
         
     steps:
-      - name: Print the input name to STDOUT        
-        run: echo The username is ${{ inputs.username }}
+      - name: Print the input tags to STDOUT        
+        run: echo The tags is ${{ github.event.inputs.tags }}
        
       #- uses: ./demo2@master
       #  with:
