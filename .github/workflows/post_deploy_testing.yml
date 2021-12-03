@@ -43,26 +43,39 @@ jobs:
       - run: ls -l ${{ github.workspace }}/robot_tests
       - run: mkdir reports
       - run: ls -l
-            
-      - name: Robot Framework
-        # You may pin to the exact commit or the version.
-        # uses: joonvena/robotframework-docker-action@3434822e049a0a5b2a02992e58c60a6831fa1189
-        uses: joonvena/robotframework-docker-action@v1.0
-        with:
-          # Shared memory that Docker container is allowed to use
-          #allowed_shared_memory: # default is 1g
-          # Browser to use
-          #browser: # default is chrome     
-          # Directory where Robot tests are located in the repository
-          robot_tests_dir: ${{ github.workspace }}/robot_tests
-          # Where will the report from test be saved
-          robot_reports_dir: ${{ github.workspace }}/reports  
       
-      - name: Upload test results
-        uses: actions/upload-artifact@v1
-        if: always()
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.5.0
         with:
-           name: reports
-           path: ${{ github.workspace }}/reports
+           # Set always-auth in npmrc
+           #always-auth: # optional, default is false
+           # Version Spec of the version to use.  Examples: 12.x, 10.15.1, >=10.15.0
+           node-version: 12.x
+         
+      
+      - name: Setup Python
+        uses: actions/setup-python@v2.3.1
+        with:
+          # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+          python-version: 3.7 # optional, default is 3.x
+          # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv.
+          #cache: # optional
+          # The target architecture (x86, x64) of the Python interpreter.
+          #architecture: # optional
+          # Used to pull python distributions from actions/python-versions. Since there's a default, this is typically not supplied by the user.
+          #token: # optional, default is ${{ github.token }}
+          # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
+          #cache-dependency-path: # optional
+          
+      - run: pip install robotframework robotframework-seleniumlibrary && nm install chromedriver
+      
+      - run: robot --version
+                  
+      #- name: Upload test results
+      #  uses: actions/upload-artifact@v1
+      #  if: always()
+      #  with:
+      #     name: reports
+      #     path: ${{ github.workspace }}/reports
       
       
