@@ -255,8 +255,33 @@ jobs:
             apiKey: ${{ secrets.HAWK_API_KEY }}
             codeScanningAlerts: true
             githubToken: ${{ github.token }}
+
+  notification_start:
+    runs-on: ubuntu-latest
+    needs: [set-version-control]    
+
+    steps:
+      - uses: actions/checkout@v2
+        with:        
+            ref: ${{ github.ref }}  
             
-  notification:
+      - name: Set Version
+        run: |
+          var_version=$(cat version.txt)
+          echo "VERSION_NO=${var_version}" >> $GITHUB_ENV
+          
+      - name: Get Version         
+        run: echo "Version is ${{ env.VERSION_NO }}"  
+          
+      - name: MS Teams Action
+        uses: FTsbrown/msteams-action@v1.0.1
+        with:          
+          TITLE: "Deploy to test done"
+          # Body of the message
+          BODY: "<b>commit : </b>${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER : </b>${GITHUB_RUN_NUMBER} <br> <b>Author : </b>${{ github.event.pusher.name }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
+          MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}" 
+            
+  notification_done:
     runs-on: ubuntu-latest
     needs: [robot-testing, DAST-Test]    
 
@@ -278,5 +303,5 @@ jobs:
         with:          
           TITLE: "Deploy to test done"
           # Body of the message
-          BODY: "<b>commit : </b>${{ github.sha }}<br><b>GITHUB_RUN_NUMBER : </b>${GITHUB_RUN_NUMBER}<br><b>Author : </b>${{ github.event.pusher.name }}<br><b>Version : </b>${{ env.VERSION_NO }}<br>"
+          BODY: "<b>commit : </b>${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER : </b>${GITHUB_RUN_NUMBER} <br> <b>Author : </b>${{ github.event.pusher.name }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
           MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}" 
