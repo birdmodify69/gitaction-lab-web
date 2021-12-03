@@ -17,16 +17,17 @@ on:
           type: string     
     
   
-jobs:
-  print-username:
+jobs: 
+  my_job:
     runs-on: ubuntu-latest
-
+    outputs:      
+        tag: ${{ github.sha }}
+        
     steps:
       - name: Print the input name to STDOUT
         run: echo The username is ${{ inputs.username }}
+        
+      - uses: birdmodify69/gitaction-lab-web/.github/workflows/demo2.yml@709020b92239fccb36525a9e7aa2239a8a8772c4
+        with:
+          username: ${{ inputs.username }}
 
-  call-workflow-passing-data:
-    uses: birdmodify69/gitaction-lab-web/.github/workflows/demo2.yml@4ac48c93c1dc981d973a14c6fdbee7be2dd16b67
-    with:
-      username: mona
- 
