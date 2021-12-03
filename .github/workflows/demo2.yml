@@ -1,7 +1,7 @@
 name: demo02
 on:
   workflow_run:
-      workflows: ["my_job"]
+      workflows: [demo01]
       types:
         - completed
         
