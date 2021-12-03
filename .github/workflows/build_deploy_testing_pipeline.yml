@@ -25,8 +25,12 @@ jobs:
           ref: ${{ github.ref }}  
        
       - run: echo The tags is ${{ github.sha }}
-      - run: v_date=$(date '+%Y%m%d')
-      - run: echo ${v_date}-${GITHUB_RUN_NUMBER} 
+      - run: | 
+            var_date=$(date '+%Y%m%d'
+            echo var_date=${var_date}
+            echo "VERSION_NO=${var_date}-${GITHUB_RUN_NUMBER} " >> $GITHUB_ENV  
+      
+      - run: echo VERSION_NO=${VERSION_NO}
       - run: echo GITHUB_JOB=${GITHUB_JOB}
       - run: ls -la
       
