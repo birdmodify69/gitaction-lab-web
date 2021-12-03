@@ -29,6 +29,6 @@ jobs:
       - name: Print the input name to STDOUT
         run: echo The username is ${{ inputs.username }}
        
-      - uses: ./.github/action/demo2@master
+      - uses: ./demo2@master
         with:
           username: birdmodify
