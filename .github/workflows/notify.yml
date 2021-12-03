@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: test-notify
 
 # Controls when the workflow will run
 on:
@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  notification:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -35,8 +35,9 @@ jobs:
         uses: charmitro/msteams-webhook-message-action@v0.6
         with:
           # eg. 123123-dasdasd2312-21312dasb/IncomingWebhook/1231231gfdgd/123123sadas123
-          WEBHOOK_URL: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
+          #https://gablegrp.webhook.office.com/webhookb2/
+          WEBHOOK_URL: dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
           # Title of MessageCard
-          TITLE: GitHub Action Say Hi
+          TITLE: "GitHub Action Say Hi"
           # Message of MessageCard
-          MESSAGE: Hello World !
+          MESSAGE: "Hello World !"
