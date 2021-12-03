@@ -272,13 +272,15 @@ jobs:
           
       - name: Get Version         
         run: echo "Version is ${{ env.VERSION_NO }}"  
+     
+      - run: echo "NOTIFY_MESG="${var_version}" >> $GITHUB_ENV
           
       - name: MS Teams Action
         uses: FTsbrown/msteams-action@v1.0.1
         with:          
-          TITLE: "Deploy to test done"
+          TITLE: "Deploy to test start"
           # Body of the message
-          BODY: "<b>commit : </b>${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER : </b>${GITHUB_RUN_NUMBER} <br> <b>Author : </b>${{ github.event.pusher.name }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
+          BODY: "<b>commit = </b> ${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER = </b> ${GITHUB_RUN_NUMBER} <br> <b>Author = </b> ${{ github.event.pusher.name }} <br> <b>Version = </b>${{ env.VERSION_NO }} <br>"
           MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}" 
             
   notification_done:
