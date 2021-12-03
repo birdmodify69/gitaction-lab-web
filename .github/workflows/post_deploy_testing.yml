@@ -69,7 +69,7 @@ jobs:
           
       - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
       
-      - run: robot --variable URL:${{ secrets.WEBAPP_URL }}  -d ./reports -x reports/outputxunit.xml ./robot_tests/Test.robot
+      - run: robot --variable URL:${{ secrets.WEBAPP_URL }}  -d ./reports -x outputxunit.xml ./robot_tests/Test.robot
       
       - run: ls -l
       - run: ls -l ./reports
