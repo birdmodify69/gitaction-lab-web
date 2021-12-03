@@ -39,7 +39,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.4.0
         
-      - run: echo testing URL ${{ secrets.WEBAPP_URL }}       
+      #- run: echo testing URL ${{ secrets.WEBAPP_URL }}       
+      - run: ls -l ${{ github.workspace }}/robot_tests
+      - run: mkdir reports
+      - run: ls -l
             
       - name: Robot Framework
         # You may pin to the exact commit or the version.
