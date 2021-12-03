@@ -41,7 +41,7 @@ jobs:
       - run: echo The tags is ${{ github.sha }}
       
       - run: pwd
-      - run: ls -l
+      - run: ls -la
       
       - uses: ./.github/workflows/demo2.yml
         with:
