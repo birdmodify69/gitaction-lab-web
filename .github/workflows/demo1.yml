@@ -40,11 +40,12 @@ jobs:
        
       - run: echo The tags is ${{ github.sha }}
       
-      - run: pwd
-      - run: ls -la
-      - run: ls -la .github/workflows/
-      - run: cat /home/runner/work/gitaction-lab-web/gitaction-lab-web/.github/workflows/demo2.yml
+      #- run: pwd
+      #- run: ls -la
+      #- run: ls -la .github/workflows/
+      #- run: cat /home/runner/work/gitaction-lab-web/gitaction-lab-web/.github/workflows/demo2.yml
       
-      - uses: ./.github/workflows/demo2.yml
-        with:
-          username: ${{ github.event.inputs.username }}
+  call-next-action:
+       uses: birdmodify69/gitaction-lab-web/.github/workflows/demo2.yml@master
+       with:
+         username: ${{ github.event.inputs.username }}
