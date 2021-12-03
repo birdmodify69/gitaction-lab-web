@@ -26,7 +26,7 @@ jobs:
         run: echo The username is ${{ inputs.username }}
 
   call-workflow-passing-data:
-    uses: birdmodify69/gitaction-lab-web/.github/workflows/demo2.yml@v1
+    uses: .github/workflows/demo2.yml@master
     with:
       username: mona
  
