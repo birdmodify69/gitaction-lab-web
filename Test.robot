@@ -2,9 +2,12 @@
 Library           SeleniumLibrary
 Library           String
 
+*** Variables ***
+${URL}            www.google.com
+
 *** Test Cases ***
 TestCase01
-    Open Browser    http://bm-webapp-aci.southeastasia.azurecontainer.io/    headlesschrome
+    Open Browser    ${URL}    headlesschrome
     Maximize Browser Window
     Wait Until Page Contains    React App
 
