@@ -26,8 +26,9 @@ jobs:
     steps:
       - name: Print the input name to STDOUT
         run: echo The username is ${{ inputs.username }}
-        
-      - uses: birdmodify69/gitaction-lab-web/.github/workflows/demo2.yml@709020b92239fccb36525a9e7aa2239a8a8772c4
-        with:
-          username: ${{ inputs.username }}
+  
+  call_job:  
+       uses: birdmodify69/gitaction-lab-web/.github/workflows/demo2.yml@709020b92239fccb36525a9e7aa2239a8a8772c4
+       with:
+         username: ${{ inputs.username }}
 
