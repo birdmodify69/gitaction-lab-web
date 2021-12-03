@@ -14,7 +14,8 @@ on:
           description: 'A username passed from the caller workflow'
           default: 'john-doe'
           required: false
-          type: string
+          type: string     
+    
   
 jobs:
   print-username:
@@ -23,3 +24,9 @@ jobs:
     steps:
       - name: Print the input name to STDOUT
         run: echo The username is ${{ inputs.username }}
+
+  call-workflow-passing-data:
+    uses: birdmodify69/gitaction-lab-web/.github/worflows/demo2.yml@main
+    with:
+      username: mona
+ 
