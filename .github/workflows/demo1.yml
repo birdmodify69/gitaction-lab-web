@@ -36,6 +36,7 @@ jobs:
         run: echo The username is ${{ github.event.inputs.username }}
        
       - run: echo The tags is ${{ github.sha }}
-      #- uses: ./demo2@master
-      #  with:
-      #    username: birdmodify
+      
+      - uses: ./.github/workflows/demo2.yml@master
+        with:
+          username: ${{ github.event.inputs.username }}
