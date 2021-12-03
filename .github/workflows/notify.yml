@@ -27,17 +27,16 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
-
-      - name: MSTeams Webhook message
-        # You may pin to the exact commit or the version.
-        # uses: charmitro/msteams-webhook-message-action@342fb6b597028e800175c680518af2d62776ccc3
-        uses: charmitro/msteams-webhook-message-action@v0.6
+        run: echo Hello, world! 
+          
+      - name: MS Teams Action
+          # You may pin to the exact commit or the version.
+          # uses: FTsbrown/msteams-action@43cfa1a2ff5cf972b73616cec806792c88a85ff8
+        uses: FTsbrown/msteams-action@v1.0.1
         with:
-          # eg. 123123-dasdasd2312-21312dasb/IncomingWebhook/1231231gfdgd/123123sadas123
-          #https://gablegrp.webhook.office.com/webhookb2/
-          WEBHOOK_URL: dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
-          # Title of MessageCard
+          # Title of the message
           TITLE: "GitHub Action Say Hi"
-          # Message of MessageCard
-          MESSAGE: "Hello World !"
+          # Body of the message
+          BODY: "Hello World !"
+          # If set, A MS Teams notification will be sent to this webhook
+          MS_TEAMS_WEBHOOK: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
