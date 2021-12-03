@@ -51,6 +51,19 @@ jobs:
           npm install
           ls -l
           
+      - name: Commit version files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add version.txt
+          git commit -m "update version to be ${{ github.sha }}"
+          
+      - name: Push version file changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}  
+          
       - name: Unit Testing
         run: |
           CI=true npm run test
@@ -107,20 +120,7 @@ jobs:
           tags: ${{ env.CONTAINER_REPO }}:${{ github.sha }}
       
       - run: echo ${{ github.sha }} > version.txt
-      - run: ls -la
-      
-      - name: Commit version files
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add version.txt
-          git commit -m "update version to be ${{ github.sha }}"
-          
-      - name: Push version file changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}    
+      - run: ls -la     
 
       - name: Trivy container images vulnerability scanner
         uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
