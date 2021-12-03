@@ -31,7 +31,7 @@ jobs:
             echo "VERSION_NO=${var_date}-${GITHUB_RUN_NUMBER} " >> $GITHUB_ENV  
       
       - run: echo VERSION_NO=${VERSION_NO}
-      - run: echo VERSION_NO=${VERSION_NO} > version.txt
+      - run: echo ${VERSION_NO} > version.txt
       - run: ls -la
       
       - name: Commit version files
