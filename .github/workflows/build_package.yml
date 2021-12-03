@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build and Deploy To Testing
+name: Build to Container
 
 # Controls when the workflow will run
 on:
@@ -11,6 +11,9 @@ on:
   #  branches: [ master ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+env:
+  CONTAINER_REPO: 'birdmodify/birdtest-webapp'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -101,13 +104,13 @@ jobs:
         with:
           context: .
           push: true
-          tags: birdmodify/birdtest-webapp:${{ github.sha }}
+          tags: ${{ env.CONTAINER_REPO }}:${{ github.sha }}
 
       - name: Trivy container images vulnerability scanner
         uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
         with:
           #image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
-          image-ref: 'birdmodify/birdtest-webapp:${{ github.sha }}'          
+          image-ref: '${{ env.CONTAINER_REPO }}:${{ github.sha }}'          
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
@@ -134,4 +137,4 @@ jobs:
         app-name: 'bird-webapp-demo-testing'
         slot-name: 'production'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}        
-        images: 'index.docker.io/birdmodify/birdtest-webapp:${{ github.sha }}'
+        images: 'index.docker.io/${{ env.CONTAINER_REPO }}:${{ github.sha }}'
