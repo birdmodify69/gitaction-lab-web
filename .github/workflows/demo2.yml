@@ -33,10 +33,11 @@ jobs:
         - name: Set Version
           run: |
             var_version=$(cat version.txt)
-            echo "version=${var_version}"
-            echo '::set-output name=VERSION_NO::${var_version}'
-          id: get-version-id
+            echo "VERSION_NO=${var_version}" >> $GITHUB_ENV
+            #echo '::set-output name=VERSION_NO::${var_version}'
+          #id: get-version-id
           
           
         - name: Get Version
-          run: echo "Version is ${{ steps.get-version-id.outputs.VERSION_NO }}"
+          #run: echo "Version is ${{ steps.get-version-id.outputs.VERSION_NO }}"
+          run: echo "Version is ${{ env.VERSION_NO }}"
