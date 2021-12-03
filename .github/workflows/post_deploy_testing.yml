@@ -89,6 +89,6 @@ jobs:
           # Token to access the API
           gh_access_token: ${{ secrets.GITHUB_TOKEN }}
           # Path to report
-          report_path: ${{ github.workspace }}/reports
+          report_path: reports
           # SHA of the commit tha triggered the tests
           #sha: # default is ${{ github.sha }}
