@@ -162,6 +162,7 @@ jobs:
 
   deploy-to-testing:  
       runs-on: ubuntu-latest
+      needs: [build-container]
       environment: 
         name: testing
         url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
