@@ -37,6 +37,6 @@ jobs:
           # Title of the message
           TITLE: "GitHub Action Say Hi"
           # Body of the message
-          BODY: <b>commit : </b>a3115774cae9dd1e2bf27fc5cc87ace9b9c579d5<br><b>GITHUB_RUN_NUMBER : </b>1<br><b>Author : </b>birdmodify<br><b>Version : </b>20211203-9<br>
+          BODY: "<b>commit : </b>a3115774cae9dd1e2bf27fc5cc87ace9b9c579d5<br><b>GITHUB_RUN_NUMBER : </b>1<br><b>Author : </b>birdmodify<br><b>Version : </b>20211203-9<br>"
           # If set, A MS Teams notification will be sent to this webhook
           MS_TEAMS_WEBHOOK: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
