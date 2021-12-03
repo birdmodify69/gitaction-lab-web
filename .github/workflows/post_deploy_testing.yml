@@ -67,7 +67,7 @@ jobs:
           # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
           #cache-dependency-path: # optional
           
-      - run: pip install robotframework robotframework-seleniumlibrary && nm install chromedriver
+      - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
       
       - run: robot --version
                   
