@@ -26,7 +26,7 @@ jobs:
        
       - run: echo The tags is ${{ github.sha }}
       - run: | 
-            var_date=$(date '+%Y%m%d'
+            var_date=$(date '+%Y%m%d')
             echo var_date=${var_date}
             echo "VERSION_NO=${var_date}-${GITHUB_RUN_NUMBER} " >> $GITHUB_ENV  
       
