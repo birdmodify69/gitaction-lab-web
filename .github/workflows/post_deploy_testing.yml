@@ -56,21 +56,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2.3.1
         with:
-          # Version range or exact version of a Python version to use, using SemVer's version range syntax.
-          python-version: 3.7 # optional, default is 3.x
-          # Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv.
-          #cache: # optional
-          # The target architecture (x86, x64) of the Python interpreter.
-          #architecture: # optional
-          # Used to pull python distributions from actions/python-versions. Since there's a default, this is typically not supplied by the user.
-          #token: # optional, default is ${{ github.token }}
-          # Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies.
-          #cache-dependency-path: # optional
-          
+          python-version: 3.7 # optional, default is 3.x         
       - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
       
-      - run: robot --variable URL:${{ secrets.WEBAPP_URL }}  -d ./reports -x outputxunit.xml ./robot_tests/Test.robot
-      
+      - name: Automate Testing by Robot
+        run: robot --variable URL:${{ secrets.WEBAPP_URL }}  -d ./reports -x outputxunit.xml ./robot_tests/Test.robot      
       - run: ls -l
       - run: ls -l ./reports
                   
@@ -80,13 +70,11 @@ jobs:
         with:
           name: reports
           path: ${{ github.workspace }}/reports      
-          #report_path: reports
-      
-      
-      - name: Download reports
-        uses: actions/download-artifact@v1
-        with:
-            name: reports
+            
+      #- name: Download reports
+      #  uses: actions/download-artifact@v1
+      #  with:
+      #      name: reports
             
       - name: Robot Reporter
         # You may pin to the exact commit or the version.
@@ -96,6 +84,5 @@ jobs:
           # Token to access the API
           gh_access_token: ${{ secrets.GITHUB_TOKEN }}
           # Path to report
-          #report_path: reports
-          # SHA of the commit tha triggered the tests
-          #sha: # default is ${{ github.sha }}
+          report_path: reports
+
