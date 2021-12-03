@@ -79,11 +79,15 @@ jobs:
         if: always()
         with:
           name: reports
-          path: ${{ github.workspace }}/reports
-      
+          path: ${{ github.workspace }}/reports      
           #report_path: reports
       
       
+      - name: Download reports
+        uses: actions/download-artifact@v1
+        with:
+            name: reports
+            
       - name: Robot Reporter
         # You may pin to the exact commit or the version.
         # uses: joonvena/robotframework-reporter-action@d98aa3cf6d09f7c4dc28ea16ea49d6e07c09dbbe
