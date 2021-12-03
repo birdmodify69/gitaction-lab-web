@@ -21,4 +21,4 @@ jobs:
 
     steps:
       - name: Print the input name to STDOUT
-        run: echo The tag is ${{ jobs.my_job.outputs.tag }}
+        run: echo The tag is ${{ jobs.pring-username.outputs.tag }}
