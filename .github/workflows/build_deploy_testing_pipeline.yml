@@ -31,18 +31,18 @@ jobs:
             echo "VERSION_NO=${var_date}-${GITHUB_RUN_NUMBER} " >> $GITHUB_ENV  
       
       - run: echo VERSION_NO=${VERSION_NO}
-      - run: echo GITHUB_JOB=${GITHUB_JOB}
+      - run: echo VERSION_NO=${VERSION_NO} > version.txt
       - run: ls -la
       
-      #- name: Commit version files
-      #  run: |          
-      #    git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      #    git config --local user.name "github-actions[bot]"
-      #    git add version.txt
-      #    git commit -m "update version to be ${v_date}-${GITHUB_RUN_NUMBER}"
+      - name: Commit version files
+        run: |          
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add version.txt
+          git commit -m "update version to be ${VERSION_NO}"
           
-      #- name: Push version changes
-      #  uses: ad-m/github-push-action@master
-      #  with:
-      #    github_token: ${{ secrets.GITHUB_TOKEN }}
-      #    branch: ${{ github.ref }}  
+      - name: Push version changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}  
