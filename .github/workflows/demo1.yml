@@ -1,12 +1,12 @@
 name: demo01
 on:
-  #workflow_call:
-  #  inputs:
-  #    username:
-  #      description: 'A username passed from the caller workflow'
-  #      default: 'john-doe'
-  #      required: false
-  #      type: string
+  workflow_call:
+    inputs:
+      username:
+        description: 'A username passed from the caller workflow'
+        default: 'john-doe'
+        required: false
+        type: string
         
   workflow_dispatch:        
     inputs:
@@ -18,14 +18,13 @@ on:
     
   
 jobs: 
-  my_job:
+  print-username:
     runs-on: ubuntu-latest
     #outputs:      
     #    tag: ${{ github.sha }}
         
     steps:
-      - name: Print the input name to STDOUT
-        id: test01
+      - name: Print the input name to STDOUT        
         run: echo The username is ${{ inputs.username }}
        
       #- uses: ./demo2@master
