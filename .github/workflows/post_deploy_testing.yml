@@ -74,12 +74,15 @@ jobs:
       - run: ls -l
       - run: ls -l ./reports
                   
-      #- name: Upload test results
-      #  uses: actions/upload-artifact@v1
-      #  if: always()
-      #  with:
-      #    name: reports
-      #     path: ${{ github.workspace }}/reports
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: reports
+          path: ${{ github.workspace }}/reports
+      
+          #report_path: reports
+      
       
       - name: Robot Reporter
         # You may pin to the exact commit or the version.
@@ -89,6 +92,6 @@ jobs:
           # Token to access the API
           gh_access_token: ${{ secrets.GITHUB_TOKEN }}
           # Path to report
-          report_path: reports
+          #report_path: reports
           # SHA of the commit tha triggered the tests
           #sha: # default is ${{ github.sha }}
