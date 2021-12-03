@@ -1,4 +1,4 @@
-name: demo2
+name: demo02
 on:
   workflow_call:
     # Map the workflow outputs to job outputs
