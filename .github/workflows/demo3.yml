@@ -9,7 +9,7 @@ on:
         type: string  
   
 jobs: 
-  checkout-control
+  checkout-control:
     runs-on: ubuntu-latest
     outputs:      
         tag: ${{ github.sha }}
@@ -17,10 +17,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.4.0
-        
-      - name: Print the input username to STDOUT
-        id: step01
-        run: echo The username is ${{ github.event.inputs.username }}
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+        with:        
+          ref: control  
        
       - run: echo The tags is ${{ github.sha }}
       
@@ -38,5 +38,5 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: control
       
