@@ -69,16 +69,16 @@ jobs:
           
       - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
       
-      - run: robot --variable URL:${{ secrets.WEBAPP_URL }}  --pythonpath ./robot_tests -x outputxunit.xml ./robot_tests/Test.robot
+      - run: robot --variable URL:${{ secrets.WEBAPP_URL }}  -d ./reports -x reports/outputxunit.xml ./robot_tests/Test.robot
       
       - run: ls -l
-      - run: ls -l ./robot_tests
+      - run: ls -l ./reports
                   
-      #- name: Upload test results
-      #  uses: actions/upload-artifact@v1
-      #  if: always()
-      #  with:
-      #     name: reports
-      #     path: ${{ github.workspace }}/reports
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+           name: reports
+           path: ${{ github.workspace }}/reports
       
       
