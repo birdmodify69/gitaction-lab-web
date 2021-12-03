@@ -1,18 +1,18 @@
 name: demo01
 on:
- # workflow_call:
- #   inputs:
- #     username:
- #       description: 'A username passed from the caller workflow'
- #       default: 'john-doe'
- #       required: false
- #       type: string
+  workflow_call:
+    inputs:
+      username:
+        description: 'A username passed from the caller workflow'
+        default: 'john-doe'
+        required: false
+        type: string
         
   workflow_dispatch:        
     inputs:
         username:
           description: 'A username passed from the caller workflow'
-          default: 'john-doe'
+          default: 'birdmodify'
           required: false
           type: string     
     
