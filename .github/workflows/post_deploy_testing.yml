@@ -1,7 +1,7 @@
 name: Post Deployment Testing
 on:
   workflow_run:
-    workflows: [deploy-to-testing]
+    workflows: [Deploy to Testing]
     types:
       - completed
   workflow_dispatch:
