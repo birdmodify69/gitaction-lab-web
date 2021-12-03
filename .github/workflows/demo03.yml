@@ -1,0 +1,42 @@
+name: demo03
+on:          
+  workflow_dispatch:
+    inputs:
+      username:
+        description: 'A username passed from the caller workflow'
+        required: false 
+        default: 'birdmodify' 
+        type: string  
+  
+jobs: 
+  checkout-control
+    runs-on: ubuntu-latest
+    outputs:      
+        tag: ${{ github.sha }}
+        
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+        
+      - name: Print the input username to STDOUT
+        id: step01
+        run: echo The username is ${{ github.event.inputs.username }}
+       
+      - run: echo The tags is ${{ github.sha }}
+      
+      - run: echo ${{ github.sha }} > version.txt
+      - run: ls -la
+      
+      - name: Commit files
+        run: |          
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add version.txt
+          git commit -m "update version to be ${{ github.sha }}"
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      
