@@ -43,6 +43,7 @@ jobs:
       - run: pwd
       - run: ls -la
       - run: ls -la .github/workflows/
+      - run: cat /home/runner/work/gitaction-lab-web/gitaction-lab-web/.github/workflows/demo2.yml
       
       - uses: ./.github/workflows/demo2.yml
         with:
