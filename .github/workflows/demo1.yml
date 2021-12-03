@@ -1,12 +1,12 @@
 name: demo01
 on:
-  workflow_call:
-    inputs:
-      username:
-        description: 'A username passed from the caller workflow'
-        default: 'john-doe'
-        required: false
-        type: string
+  #workflow_call:
+  #  inputs:
+  #    username:
+  #      description: 'A username passed from the caller workflow'
+  #      default: 'john-doe'
+  #      required: false
+  #      type: string
         
   workflow_dispatch:        
     inputs:
@@ -20,8 +20,8 @@ on:
 jobs: 
   my_job:
     runs-on: ubuntu-latest
-    outputs:      
-        tag: ${{ github.sha }}
+    #outputs:      
+    #    tag: ${{ github.sha }}
         
     steps:
       - name: Print the input name to STDOUT
