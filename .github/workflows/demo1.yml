@@ -25,11 +25,12 @@ jobs:
       - run: echo The tags is ${{ github.sha }}
       
       - run: echo ${{ github.sha }} > version.txt
+      - run: ls -l
       
       - run: |
           git add version.txt
           git commit "Update version to be ${{ github.sha }}"
-          git commit
+          git push
           
       
   call-next-action:
