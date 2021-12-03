@@ -47,26 +47,19 @@ jobs:
         uses: joonvena/robotframework-docker-action@v1.0
         with:
           # Shared memory that Docker container is allowed to use
-          allowed_shared_memory: # default is 1g
+          #allowed_shared_memory: # default is 1g
           # Browser to use
-          browser: # default is chrome
-          # Execute tests in parallel
-          robot_threads: # default is 1
-          # Extra settings for parallel execution. https://github.com/mkorpela/pabot#command-line-options
-          pabot_options: # default is 
-          # Extra options for robot command
-          robot_options: # default is 
-          # Color depth of the virtual screen
-          screen_color_depth: # default is 24
-          # Height of the virtual screen
-          screen_height: # default is 1080
-          # Width of the virtual screen
-          screen_width: # default is 1920
+          #browser: # default is chrome     
           # Directory where Robot tests are located in the repository
-          robot_tests_dir: # default is robot_tests
+          robot_tests_dir: ${{ github.workspace }}/robot_tests
           # Where will the report from test be saved
-          robot_reports_dir: # default is reports  
+          robot_reports_dir: ${{ github.workspace }}/reports  
       
-      
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+           name: reports
+           path: ${{ github.workspace }}/reports
       
       
