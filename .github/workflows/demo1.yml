@@ -31,10 +31,11 @@ jobs:
         tag: ${{ github.sha }}
         
     steps:
-      - name: Print the input tags to STDOUT
+      - name: Print the input username to STDOUT
         id: step01
-        run: echo The tags is ${{ github.event.inputs.username }}
+        run: echo The username is ${{ github.event.inputs.username }}
        
+      - run: echo The tags is ${{ github.sha }}
       #- uses: ./demo2@master
       #  with:
       #    username: birdmodify
