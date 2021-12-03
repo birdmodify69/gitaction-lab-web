@@ -1,15 +1,16 @@
 name: demo02
 on:
-  workflow_run:
-      workflows: [demo01]
-      types:
-        - completed
+  #workflow_run:
+  #    workflows: [demo01]
+  #    types:
+  #      - completed
         
-  #workflow_call:
-  #  inputs:
-   #   username:
-   #     required: true
-   #     type: string
+  workflow_call:
+    inputs:
+      username:
+        required: true
+        type: string
+       
     #outputs:
     #  workflow_output1:
     #    description: "The first job output"
@@ -18,7 +19,6 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-
     steps:
       - name: Print the input name to STDOUT
-        run: echo The tag is ${{ github.event.jobs.print-username.outputs.tag }}
+        run: echo The tag is ${{ github.event.inputs.username }}
