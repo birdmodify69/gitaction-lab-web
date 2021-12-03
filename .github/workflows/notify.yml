@@ -22,21 +22,22 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world! 
+        with:        
+            ref: ${{ github.ref }}  
+            
+      - name: Set Version
+        run: |
+          var_version=$(cat version.txt)
+          echo "VERSION_NO=${var_version}" >> $GITHUB_ENV
+          
+      - name: Get Version         
+        run: echo "Version is ${{ env.VERSION_NO }}"  
           
       - name: MS Teams Action
-          # You may pin to the exact commit or the version.
-          # uses: FTsbrown/msteams-action@43cfa1a2ff5cf972b73616cec806792c88a85ff8
         uses: FTsbrown/msteams-action@v1.0.1
-        with:
-          # Title of the message
-          TITLE: "GitHub Action Say Hi"
+        with:          
+          TITLE: "Deploy to test starting"
           # Body of the message
-          BODY: "<b>commit : </b>a3115774cae9dd1e2bf27fc5cc87ace9b9c579d5<br><b>GITHUB_RUN_NUMBER : </b>1<br><b>Author : </b>birdmodify<br><b>Version : </b>20211203-9<br>"
-          # If set, A MS Teams notification will be sent to this webhook
+          BODY: "<b>commit : </b>${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER : </b>${GITHUB_RUN_NUMBER} <br> <b>Author : </b>${{ github.event.pusher.name }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
           MS_TEAMS_WEBHOOK: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
