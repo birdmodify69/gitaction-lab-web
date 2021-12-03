@@ -90,8 +90,8 @@ jobs:
       name: StackHawk
       runs-on: ubuntu-20.04
       steps:
-        #- name: Checkout code
-        #  uses: actions/checkout@v2
+        - name: Checkout code
+          uses: actions/checkout@v2
         
         #- name: Start your service
           #run: ./your-service.sh &                  # ✏️ Update this to run your own service to be scanned
