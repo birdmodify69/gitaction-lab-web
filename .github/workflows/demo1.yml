@@ -1,21 +1,5 @@
 name: demo01
-on:
-  #workflow_call:
-  #  inputs:
-  #    username:
-  #      description: 'A username passed from the caller workflow'
-  #      default: 'john-doe'
-  #      required: false
-  #      type: string
-        
-  #workflow_dispatch:        
-  #  inputs:
-  #      username:
-  #        description: 'A username passed from the caller workflow'
-  #        default: 'birdmodify'
-  #        required: false
-  #        type: string     
-          
+on:          
   workflow_dispatch:
     inputs:
       username:
@@ -40,10 +24,13 @@ jobs:
        
       - run: echo The tags is ${{ github.sha }}
       
-      #- run: pwd
-      #- run: ls -la
-      #- run: ls -la .github/workflows/
-      #- run: cat /home/runner/work/gitaction-lab-web/gitaction-lab-web/.github/workflows/demo2.yml
+      - run: echo ${{ github.sha }} > version.txt
+      
+      - run: |
+          git add version.txt
+          git commit "Update version to be ${{ github.sha }}"
+          git commit
+          
       
   call-next-action:
        uses: birdmodify69/gitaction-lab-web/.github/workflows/demo2.yml@master
