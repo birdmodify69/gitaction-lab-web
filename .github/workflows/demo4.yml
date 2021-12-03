@@ -1,0 +1,21 @@
+name: demo04
+on:          
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '.github/**'
+      - 'version.txt'
+  
+  workflow_dispatch:
+ 
+  
+jobs: 
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:       
+      - run: echo The tags is ${{ github.sha }}
+      - run: echo The GITHUB_RUN_NUMBER is ${GITHUB_RUN_NUMBER}
+      - run: echo The RUNNER_NAME is ${RUNNER_NAME}
+      - run: echo The RUNNER_NAME is ${RUNNER_NAME}
+   
