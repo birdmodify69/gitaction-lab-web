@@ -15,5 +15,5 @@ jobs:
       - run: echo The tags is ${{ github.sha }}
       - run: echo The GITHUB_RUN_NUMBER is ${GITHUB_RUN_NUMBER}
       - run: echo The RUNNER_NAME is ${RUNNER_NAME}
-      - run: echo The RUNNER_NAME is ${RUNNER_NAME}
+      - run: echo The pusher is ${{ github.event.pusher.name }}
    
