@@ -18,24 +18,22 @@ on:
           
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'     
-        required: true
-        default: 'warning' 
-      tags:
-        description: 'Test scenario tags'
+      username:
+        description: 'A username passed from the caller workflow'
         required: false 
-        default: 'OK' 
+        default: 'birdmodify' 
+        type: string  
   
 jobs: 
   print-username:
     runs-on: ubuntu-latest
-    #outputs:      
-    #    tag: ${{ github.sha }}
+    outputs:      
+        tag: ${{ github.sha }}
         
     steps:
-      - name: Print the input tags to STDOUT        
-        run: echo The tags is ${{ github.event.inputs.tags }}
+      - name: Print the input tags to STDOUT
+        id: step01
+        run: echo The tags is ${{ github.event.inputs.username }}
        
       #- uses: ./demo2@master
       #  with:
