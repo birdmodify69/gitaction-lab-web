@@ -24,11 +24,9 @@ jobs:
         tag: ${{ github.sha }}
         
     steps:
-      - uses: actions/checkout@v2
-      
       - name: Print the input name to STDOUT
         run: echo The username is ${{ inputs.username }}
        
-      - uses: ./demo2@master
-        with:
-          username: birdmodify
+      #- uses: ./demo2@master
+      #  with:
+      #    username: birdmodify
