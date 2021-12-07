@@ -280,7 +280,8 @@ jobs:
         with:          
           TITLE: "Deploy to test start"
           # Body of the message
-          BODY: "<b>commit = </b> ${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER = </b> ${GITHUB_RUN_NUMBER} <br> <b>Author = </b> ${{ github.event.pusher.name }} <br> <b>Version = </b>${{ env.VERSION_NO }} <br>"
+          #BODY: "<b>commit = </b> ${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER = </b> ${GITHUB_RUN_NUMBER} <br> <b>Author = </b> ${{ github.event.pusher.name }} <br> <b>Version = </b>${{ env.VERSION_NO }} <br>"
+          BODY: "<b>commit : </b> ${{ github.sha }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
           MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}" 
             
   notification_done:
@@ -305,5 +306,6 @@ jobs:
         with:          
           TITLE: "Deploy to test done"
           # Body of the message
-          BODY: "<b>commit : </b>${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER : </b>${GITHUB_RUN_NUMBER} <br> <b>Author : </b>${{ github.event.pusher.name }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
+          #BODY: "<b>commit : </b>${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER : </b>${GITHUB_RUN_NUMBER} <br> <b>Author : </b>${{ github.event.pusher.name }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
+          BODY: "<b>commit : </b>${{ github.sha }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
           MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}" 
