@@ -32,6 +32,32 @@ jobs:
         # Specify the script here
         inlineScript: |
           echo "Hello World"
-          az group show -n bird-lab-rg        
+          az group show -n bird-lab-rg     
+          #!/bin/bash
+          WEBAPP=bird-webapp-demo-prod
+          RESOURCEGROUP=bird-lab-rg
+          MINUTES=3
+          RAMPUPPERCENTAGE=10
+          regularExpression='^[0-9]+$'
+          if ! ([[ $MINUTES =~ $regularExpression ]] && [[ $RAMPUPPERCENTAGE =~ $regularExpression ]]);
+          then
+             echo "error: Not a number" >&2;
+          else
+           secsToRumpUp=$(awk "BEGIN {print ($RAMPUPPERCENTAGE/100)*($MINUTES*60)}")
+           rumpup=$RAMPUPPERCENTAGE;
+           incremental=$(awk "BEGIN {print ($MINUTES*60)/$secsToRumpUp}")
+           echo "Your webapp $WEBAPP in the resource group $RESOURCEGROUP will be traffic-routed in the next $MINUTES minutes every $secsToRumpUp secs a $RAMPUPPERCENTAGE %";
+           for (( c=0; c<$incremental; c++ ))
+           do      
+             echo "Incrementing staging slot to $rumpup %";   
+             az webapp traffic-routing set --distribution staging=$rumpup --name $WEBAPP --resource-group $RESOURCEGROUP
+             sleep "$secsToRumpUp"
+             let "rumpup += RAMPUPPERCENTAGE";
+           done
+           echo "Rolling back traffic-routing..."
+           az webapp traffic-routing clear --name $WEBAPP --resource-group $RESOURCEGROUP
+           echo "Swapping $WEBAPP"
+          az webapp deployment slot swap  -g $RESOURCEGROUP -n $WEBAPP --slot staging --target-slot production
+          fi
         # Azure CLI version to be used to execute the script. If not provided, latest version is used
         #azcliversion: # optional, default is agentazcliversion
