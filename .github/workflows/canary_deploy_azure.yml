@@ -1,0 +1,33 @@
+on:          
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '.github/**'
+      - 'version.txt'  
+  workflow_dispatch: 
+
+env:
+  AZURE_WEBAPP_NAME: your-app-name    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '10.x'                # set this to the node version to use
+
+jobs:
+  build-and-deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+  
+    - name: Azure CLI Action
+      uses: Azure/cli@v1
+      with:
+        # Specify the script here
+        inlineScript: |
+          echo "Hello World"
+          az group show -n bird-lab-rg        
+        # Azure CLI version to be used to execute the script. If not provided, latest version is used
+        #azcliversion: # optional, default is agentazcliversion
