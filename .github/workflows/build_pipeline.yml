@@ -1,0 +1,312 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build Pipeline
+
+on:          
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '.github/**'
+      - 'version.txt'  
+  workflow_dispatch: 
+
+env:
+  CONTAINER_REPO: 'birdmodify/birdtest-webapp'
+  AZURE_WEBAPP_NAME: bird-webapp-demo-testing 
+  WEBAPP_URL: https://bird-webapp-demo-testing.azurewebsites.net
+  MS_TEAM_URL: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
+  
+jobs:
+  
+  set-version-control:
+    runs-on: ubuntu-latest    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+        with:        
+          ref: ${{ github.ref }}  
+       
+      - run: echo The tags is ${{ github.sha }}
+      - run: | 
+            var_date=$(date '+%Y%m%d')
+            echo var_date=${var_date}
+            echo "VERSION_NO=${var_date}-${GITHUB_RUN_NUMBER} " >> $GITHUB_ENV  
+      
+      - run: echo VERSION_NO=${VERSION_NO}
+      - run: echo ${VERSION_NO} > version.txt
+      - run: ls -la
+      
+      - name: Commit version files
+        run: |          
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add version.txt
+          git commit -m "update version to be ${VERSION_NO}"
+          
+      - name: Push version changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}  
+
+  build-container:    
+    runs-on: ubuntu-latest
+    needs: [set-version-control]
+    environment: testing
+      
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:        
+            ref: ${{ github.ref }}   
+            
+      - name: Set Version
+        run: |
+          var_version=$(cat version.txt)
+          echo "VERSION_NO=${var_version}" >> $GITHUB_ENV
+          
+      - name: Get Version         
+        run: echo "Version is ${{ env.VERSION_NO }}"
+        
+      - name: Setup Node.js ${{ matrix.node-version }} 
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'     
+          
+      - name: Install Dependencies
+        run: | 
+          npm install
+          ls -l
+          
+      - name: Unit Testing
+        run: |
+          CI=true npm run test
+          cat coverage/cobertura-coverage.xml
+      
+      - name: Publish Unit Test Result
+        uses: 5monkeys/cobertura-action@master
+        with:
+          path: coverage/cobertura-coverage.xml
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          minimum_coverage: 0
+          
+      - name: Upload coverage result
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-coverage
+          path: coverage
+
+      - uses: sonarsource/sonarqube-scan-action@master
+        env:
+          sonar.projectKey: test-demo-web
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}    
+
+      - name: SonarQube Quality Gate Check      
+        uses: SonarSource/sonarqube-quality-gate-action@v1.0.0
+        timeout-minutes: 5
+        env:
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        #with:
+          # Location of the scanner metadata report file
+          # scanMetadataReportFile: # optional, default is .scannerwork/report-task.txt
+          
+      - name: Build to Package
+        run: | 
+          npm run build
+          ls -l
+      
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: birdtest-webapp
+          path: build
+
+      - name: Set up Docker Build
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to registry
+        uses: docker/login-action@v1
+        with:
+          registry: https://index.docker.io/v1/
+          username: ${{ secrets.DOCKERHUB_USERNAME}}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}     
+        
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ env.CONTAINER_REPO }}:${{ env.VERSION_NO }}
+          
+      - run : |
+            docker ps
+            docker image ls -a
+      
+      - name: Run the Anchore scan action itself with GitHub Advanced Security code scanning integration enabled
+        uses: anchore/scan-action@b08527d5ae7f7dc76f9621edb6e49eaf47933ccd
+        with:
+          image: "${{ env.CONTAINER_REPO }}:${{ env.VERSION_NO }} "
+          # Generate a SARIF report and set the `sarif` output parameter after successful action execution.  This report is compatible with GitHub Automated Code Scanning (ACS), as the artifact to upload for display as a Code Scanning Alert report.
+          acs-report-enable: true          
+          # Set to false to avoid failing based on severity-cutoff. Default is to fail when severity-cutoff is reached (or surpassed)
+          fail-build: false # optional, default is true      
+          # Optionally specify the minimum vulnerability severity to trigger an "error" level ACS result.  Valid choices are "negligible", "low", "medium", "high" and "critical".  Any vulnerability with a severity less than this value will lead to a "warning" result.  Default is "medium".
+          severity-cutoff: critical # optional, default is medium
+        
+      - name: Upload Anchore Scan Report
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: results.sarif
+
+  deploy-to-testing:  
+      runs-on: ubuntu-latest
+      needs: [build-container]
+      environment: 
+        name: testing
+        url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+        
+      steps:
+      - name: Checkout Control
+        uses: actions/checkout@v2.4.0
+        with:        
+            ref: ${{ github.ref }}   
+            
+      - name: Set Version
+        run: |
+          var_version=$(cat version.txt)
+          echo "VERSION_NO=${var_version}" >> $GITHUB_ENV
+          
+      - name: Get Version         
+        run: echo "Version is ${{ env.VERSION_NO }}"    
+          
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}        
+          images: 'index.docker.io/${{ env.CONTAINER_REPO }}:${{ env.VERSION_NO }}'
+
+  robot-testing:
+      runs-on: ubuntu-latest
+      needs: [deploy-to-testing]
+      environment: 
+        name: testing
+        url: ${{ env.WEBAPP_URL }}
+
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+      - run: ls -l ${{ github.workspace }}/robot_tests
+      - run: mkdir reports
+      - run: ls -l
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.5.0
+        with:
+           node-version: 12.x        
+      
+      - name: Setup Python
+        uses: actions/setup-python@v2.3.1
+        with:
+          python-version: 3.7 # optional, default is 3.x         
+      - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
+      
+      - name: Automate Testing by Robot
+        run: robot --variable URL:${{ secrets.WEBAPP_URL }}  -d ./reports -x outputxunit.xml ./robot_tests/Test.robot      
+      - run: ls -l
+      - run: ls -l ./reports
+                  
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: reports
+          path: ${{ github.workspace }}/reports
+          
+      - name: Robot Reporter
+        # You may pin to the exact commit or the version.
+        # uses: joonvena/robotframework-reporter-action@d98aa3cf6d09f7c4dc28ea16ea49d6e07c09dbbe
+        uses: joonvena/robotframework-reporter-action@v1.1
+        with:
+          # Token to access the API
+          gh_access_token: ${{ secrets.GITHUB_TOKEN }}
+          # Path to report
+          report_path: reports
+
+  DAST-Test:
+      name: OWASP ZAP Full Scan
+      runs-on: ubuntu-20.04
+      needs: [deploy-to-testing]
+      
+      steps:
+      - name: OWASP ZAP Full Scan
+        # You may pin to the exact commit or the version.
+        # uses: zaproxy/action-full-scan@1f35897c4c11af6b1203c36b67a5ba99c3c5b5f4
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          # GitHub Token to create issues in the repository
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Target URL
+          target: ${{ env.AZURE_WEBAPP_URL }}
+
+  notification_start:
+    runs-on: ubuntu-latest
+    needs: [set-version-control]    
+
+    steps:
+      - uses: actions/checkout@v2
+        with:        
+            ref: ${{ github.ref }}  
+            
+      - name: Set Version
+        run: |
+          var_version=$(cat version.txt)
+          echo "VERSION_NO=${var_version}" >> $GITHUB_ENV
+          
+      - name: Get Version         
+        run: echo "Version is ${{ env.VERSION_NO }}"  
+     
+      - run: echo "NOTIFY_MESG="${var_version}" >> $GITHUB_ENV
+          
+      - name: MS Teams Action
+        uses: FTsbrown/msteams-action@v1.0.1
+        with:          
+          TITLE: "Deploy to test start"
+          # Body of the message
+          #BODY: "<b>commit = </b> ${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER = </b> ${GITHUB_RUN_NUMBER} <br> <b>Author = </b> ${{ github.event.pusher.name }} <br> <b>Version = </b>${{ env.VERSION_NO }} <br>"
+          BODY: "<b>commit : </b> ${{ github.sha }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
+          MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}" 
+            
+  notification_done:
+    runs-on: ubuntu-latest
+    needs: [robot-testing, DAST-Test]    
+
+    steps:
+      - uses: actions/checkout@v2
+        with:        
+            ref: ${{ github.ref }}  
+            
+      - name: Set Version
+        run: |
+          var_version=$(cat version.txt)
+          echo "VERSION_NO=${var_version}" >> $GITHUB_ENV
+          
+      - name: Get Version         
+        run: echo "Version is ${{ env.VERSION_NO }}"  
+          
+      - name: MS Teams Action
+        uses: FTsbrown/msteams-action@v1.0.1
+        with:          
+          TITLE: "Deploy to test done"
+          # Body of the message
+          #BODY: "<b>commit : </b>${{ github.sha }} <br> <b>GITHUB_RUN_NUMBER : </b>${GITHUB_RUN_NUMBER} <br> <b>Author : </b>${{ github.event.pusher.name }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
+          BODY: "<b>commit : </b>${{ github.sha }} <br> <b>Version : </b>${{ env.VERSION_NO }} <br>"
+          MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}" 
