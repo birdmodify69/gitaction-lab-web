@@ -13,7 +13,7 @@ on:
 env:
   CONTAINER_REPO: 'birdmodify/birdtest-webapp'
   AZURE_WEBAPP_NAME: bird-webapp-demo-testing 
-  WEBAPP_URL: https://bird-webapp-demo-testing.azurewebsites.net
+  AZURE_WEBAPP_URL: https://bird-webapp-demo-testing.azurewebsites.net
   MS_TEAM_URL: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
   
 jobs:
@@ -64,12 +64,12 @@ jobs:
         with:        
             ref: ${{ github.ref }}   
             
-      - name: Set Version
+      - name: Get Version
         run: |
           var_version=$(cat version.txt)
           echo "VERSION_NO=${var_version}" >> $GITHUB_ENV
           
-      - name: Get Version         
+      - name: Check Version         
         run: echo "Version is ${{ env.VERSION_NO }}"
         
       - name: Setup Node.js ${{ matrix.node-version }} 
@@ -177,12 +177,12 @@ jobs:
         with:        
             ref: ${{ github.ref }}   
             
-      - name: Set Version
+      - name: Get Version
         run: |
           var_version=$(cat version.txt)
           echo "VERSION_NO=${var_version}" >> $GITHUB_ENV
           
-      - name: Get Version         
+      - name: Check Version         
         run: echo "Version is ${{ env.VERSION_NO }}"    
           
       - name: Deploy to Azure Web App
@@ -199,7 +199,7 @@ jobs:
       needs: [deploy-to-testing]
       environment: 
         name: testing
-        url: ${{ env.WEBAPP_URL }}
+        url: ${{ env.AZURE_WEBAPP_URL }}
 
       steps:
       - name: Checkout
@@ -220,7 +220,7 @@ jobs:
       - run: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
       
       - name: Automate Testing by Robot
-        run: robot --variable URL:${{ secrets.WEBAPP_URL }}  -d ./reports -x outputxunit.xml ./robot_tests/Test.robot      
+        run: robot --variable URL:${{ env.AZURE_WEBAPP_URL }}  -d ./reports -x outputxunit.xml ./robot_tests/Test.robot      
       - run: ls -l
       - run: ls -l ./reports
                   
