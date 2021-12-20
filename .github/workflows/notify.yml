@@ -48,7 +48,7 @@ jobs:
           # Body of the message
           BODY: "<b>commit : </b>${{ github.sha }} <br> <b>Version : </b> ${{ env.VERSION_NO }} <br>"
           #MS_TEAMS_WEBHOOK: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
-          MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}"                     
+          MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}
     
       - name: Notify dedicated teams channel
         uses: jdcargile/ms-teams-notification@v1.3
