@@ -14,7 +14,8 @@ on:
   workflow_dispatch:
   
 env:
-  MS_TEAM_URL: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
+  #MS_TEAM_URL: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
+  MS_TEAM_URL: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/9b5330ea8fc04428bc6938a33552c44c/89ed1696-cd46-4df0-b79f-ac4bc01308b1
   
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -49,3 +50,11 @@ jobs:
           #MS_TEAMS_WEBHOOK: https://gablegrp.webhook.office.com/webhookb2/dd936596-4bd2-496c-8e78-b5bc1ba6fb8f@45be8033-beb7-4d4b-ab77-608ee11e6449/IncomingWebhook/18653518e0d344f5bd0d0492d54bbe77/89ed1696-cd46-4df0-b79f-ac4bc01308b1
           MS_TEAMS_WEBHOOK: ${{ env.MS_TEAM_URL }}"                     
     
+      - name: Notify dedicated teams channel
+        uses: jdcargile/ms-teams-notification@v1.3
+        with:
+          github-token: ${{ github.token }} # this will use the runner's token.
+          ms-teams-webhook-uri: ${{ env.MS_TEAM_URL }}
+          notification-summary: Your custom notification message 
+          notification-color: 17a2b8
+          timezone: America/Denver
