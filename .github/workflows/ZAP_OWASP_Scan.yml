@@ -34,7 +34,8 @@ jobs:
           # GitHub Token to create issues in the repository
           token: ${{ secrets.GITHUB_TOKEN }}
           # Target URL
-          target: https://bird-webapp-demo-testing.azurewebsites.net/
+          #target: https://bird-webapp-demo-testing.azurewebsites.net/
+          target: http://gdevtops.g-able.com
           # Relative path of the ZAP configuration file
           #rules_file_name: # optional
           # The Docker file to be executed
